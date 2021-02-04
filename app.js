@@ -1,13 +1,29 @@
+var cookieParser = require("cookie-parser");
 var createError = require("http-errors");
 var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
+var env = require("dotenv");
 var logger = require("morgan");
+var path = require("path");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 
 var app = express();
+
+env.config();
+
+const MongoClient = require("mongodb").MongoClient;
+const uri = `mongodb+srv://Aniket:${process.env.password}@cluster0.9voqa.mongodb.net/${process.env.dbname}?retryWrites=true&w=majority`;
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+client.connect((err) => {
+  const collection = client.db("test").collection("devices");
+  if (!err) console.log("Connected!");
+  // perform actions on the collection object
+  client.close();
+});
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
