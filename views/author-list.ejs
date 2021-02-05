@@ -1,0 +1,11 @@
+<%- include('partials/header') %>
+<h1><%= title %></h1>
+<ul>
+  <% author_list.map(author => { %>
+  <li>
+    <a href="<%= author.url %>"><%= author.name %></a>
+    (<%= author.date_of_birth %> - <%= author.date_of_death %>)
+  </li>
+  <% }) %>
+</ul>
+<%- include('partials/footer') %>

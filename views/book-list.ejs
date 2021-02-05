@@ -5,7 +5,7 @@
   = b.title.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 :
   0;}); %> <% book_list.map(book => { %>
   <li>
-    <a href="book.url"><%= book.title %></a>
+    <a href="<%= book.url %>"><%= book.title %></a>
     (<%= book.author.name %>)
   </li>
   <% }) %>
