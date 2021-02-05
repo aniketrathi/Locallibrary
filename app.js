@@ -3,6 +3,7 @@ var createError = require("http-errors");
 var express = require("express");
 var env = require("dotenv");
 var logger = require("morgan");
+var mongoose = require('mongoose');
 var path = require("path");
 
 var indexRouter = require("./routes/index");
@@ -13,18 +14,12 @@ var app = express();
 
 env.config();
 
-const MongoClient = require("mongodb").MongoClient;
-const uri = `mongodb+srv://Aniket:${process.env.password}@cluster0.9voqa.mongodb.net/${process.env.dbname}?retryWrites=true&w=majority`;
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-client.connect((err) => {
-  const collection = client.db("test").collection("devices");
-  if (!err) console.log("Connected!");
-  // perform actions on the collection object
-  client.close();
-});
+const dev_db_url =
+`mongodb+srv://Aniket:${process.env.password}@cluster0.9voqa.mongodb.net/${process.env.dbname}?retryWrites=true&w=majority`;
+const mongoDB = process.env.MONGODB_URI || dev_db_url;
+mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

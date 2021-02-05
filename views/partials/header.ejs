@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<head>
+  <title><%= title %></title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+    crossorigin="anonymous"
+  />
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-2">
+        <ul class="sidebar-nav">
+          <li>
+            <a href="/catalog">Home</a>
+          </li>
+          <li>
+            <a href="/catalog/books">All Books</a>
+          </li>
+          <li>
+            <a href="/catalog/authors">All Authors</a>
+          </li>
+          <li>
+            <a href="/catalog/genres">All genres</a>
+          </li>
+          <li>
+            <a href="/catalog/bookinstances">All Book-instances</a>
+          </li>
+            <hr />
+          <li>
+            <a href="/catalog/author/create">Create New Author</a>
+          </li>
+          <li>
+            <a href="/catalog/genre/create">Create New Genre</a>
+          </li>
+          <li>
+            <a href="/catalog/book/create">Create New Book</a>
+          </li>
+          <li>
+            <a href="/catalog/bookinstance/create">
+              Create New Book-instance (copy)
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-10">
