@@ -22,7 +22,7 @@
   <% } %>
   <br />
   <b>Imprint:</b><%= val.imprint %> <br /><% if(val.status != "Available"){ %>
-  <span>Due: <%= val.due_back %></span><br />
+  <span>Due: <%= val.due_back_formatted %></span><br />
   <% } %>
   <b>Id:</b><a href="<%= val.url %>"><%= val.id %></a>
   <% }) } else{ %>
