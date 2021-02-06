@@ -3,10 +3,12 @@
 <div style="margin-left: 20px; margin-top: 20px">
   <h4>Books</h4>
   <dl>
-    <% genre_books.map(book => { %>
+    <% if(genre_books[0]){ genre_books.map(book => { %>
     <dt><a href="<%= book.url %>"><%= book.title %></a></dt>
     <dd><%= book.summary %></dd>
-    <% }) %>
+    <% }) } else{ %>
+    <p>This Genre has no books.</p>
+    <% } %>
   </dl>
 </div>
 <%- include('partials/footer') %>
