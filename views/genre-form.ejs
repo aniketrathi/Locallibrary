@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+<h1><%= title %></h1>
+<form method="POST" action="">
+  <div class="form-group">
+    <label for="name">Genre:</label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      class="form-control"
+      placeholder="Fantasy, Poetry etc."
+    />
+  </div>
+  <br />
+  <input type="submit" value="Submit" class="btn btn-primary" />
+</form>
+<% if(errors){ %>
+<ul>
+  <% errors.map(error => { %>
+  <li><%= error.msg %></li>
+  <% }) %>
+</ul>
+<% } - include('partials/footer') %>
