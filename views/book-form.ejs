@@ -24,6 +24,7 @@
       <% authors.sort(function(a, b) {let textA = a.family_name.toUpperCase();
       let textB = b.family_name.toUpperCase(); return (textA < textB) ? -1 :
       (textA > textB) ? 1 : 0;}); authors.map(author => { %>
+      <option value="" disabled selected hidden>Select Author</option>
       <option value="<%= author._id %>"><%= author.name %></option>
       <% }) %>
     </select>

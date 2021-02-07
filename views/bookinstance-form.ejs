@@ -1,0 +1,57 @@
+<%- include('partials/header') %>
+<h1><%= title %></h1>
+<form method="POST" action="">
+  <div class="form-group">
+    <label for="book">Book:</label>
+    <select
+      type="select"
+      id="book"
+      name="book"
+      class="form-control"
+      placeholder="select book"
+    >
+      <% book_list.sort(function(a, b) {let textA = a.title.toUpperCase(); let
+      textB = b.title.toUpperCase(); return (textA < textB) ? -1 : (textA >
+      textB) ? 1 : 0;}); book_list.map(book =>{ %>
+      <option value="<%= book._id %>"><%= book.title %></option>
+      <% }) %>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="imprint">Imprint:</label>
+    <input
+      type="text"
+      id="imprint"
+      name="imprint"
+      class="form-control"
+      placeholder="Publisher and date information"
+    />
+  </div>
+  <div class="form-group">
+    <label for="due_back">Imprint:</label>
+    <input
+      type="text"
+      id="imprint"
+      name="imprint"
+      class="form-control"
+      placeholder="Publisher and date information"
+    />
+  </div>
+  <div class="form-group">
+      <label for="status">Status:</label>
+      <select type="select" class="form-control" id="status" name="status">
+        <option value="" disabled selected hidden>Select Status</option>
+        <option value='Maintenance'>Maintenance</option> 
+        <option value='Available'>Available</option>
+        <option value='Loaned'>Loaned</option>
+        <option value='Reserved'>Reserved</option> 
+      </select>
+  </div>
+</form>
+<% if(errors){ %>
+<ul>
+  <% errors.map(error => { %>
+  <li><%= error.msg %></li>
+  <% }) %>
+</ul>
+<% } - include('partials/footer') %>
