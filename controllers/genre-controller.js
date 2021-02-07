@@ -168,10 +168,28 @@ exports.genre_delete_post = function (req, res) {
 
 // Display Genre update form on GET.
 exports.genre_update_get = function (req, res) {
-  res.send("NOT IMPLEMENTED: Genre update GET");
+  Genre.findById(req.params.id)
+  .exec(function (err, genre) {
+    if (err) {
+      return next(err);
+    }
+    //Successful, so render
+    res.render("genre-form", {
+      title: "Genre Form update",
+      genre: genre,
+    });
+  });
 };
 
 // Handle Genre update on POST.
 exports.genre_update_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: Genre update POST");
+  Genre.findByIdAndUpdate(req.params.id, req.body)
+    .exec(function(err, updated_genre){
+      if(err)
+        return next(err);
+      else{
+        console.log(updated_genre);
+        res.redirect('/catalog/genres');
+      }
+    })
 };
