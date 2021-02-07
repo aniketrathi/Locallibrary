@@ -19,5 +19,8 @@
 <p><b>Due: </b><%= bookinstance.due_back_formatted %></p>
 <% } %>
 <hr />
-<p><a href="<%= bookinstance.url %>/delete">Delete Copy</a></p>
+<p>
+  <a href="<%= bookinstance.url %>/delete">Delete Copy</a>
+  <a href="<%= bookinstance.url %>/update">Update Copy</a>
+</p>
 <%- include('partials/footer') %>

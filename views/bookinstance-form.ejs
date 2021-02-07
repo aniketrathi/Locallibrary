@@ -7,12 +7,14 @@
       type="select"
       id="book"
       name="book"
+      value="<%= locals.bookinstance === undefined ? '' : locals.bookinstance.book %>"
       class="form-control"
       placeholder="select book"
     >
       <% book_list.sort(function(a, b) {let textA = a.title.toUpperCase(); let
       textB = b.title.toUpperCase(); return (textA < textB) ? -1 : (textA >
       textB) ? 1 : 0;}); book_list.map(book =>{ %>
+      <option value="" disabled selected hidden>Select book</option>
       <option value="<%= book._id %>"><%= book.title %></option>
       <% }) %>
     </select>
@@ -23,6 +25,7 @@
       type="text"
       id="imprint"
       name="imprint"
+      value="<%= locals.bookinstance === undefined ? '' : locals.bookinstance.imprint %>"
       class="form-control"
       placeholder="Publisher and date information"
     />
@@ -33,6 +36,7 @@
       type="date"
       id="due_back"
       name="due_back"
+      value="<%= locals.bookinstance === undefined ? '' : locals.bookinstance.due_back %>"
       class="form-control"
     />
   </div>

@@ -139,10 +139,29 @@ exports.bookinstance_delete_post = function (req, res) {
 
 // Display BookInstance update form on GET.
 exports.bookinstance_update_get = function (req, res) {
-  res.send("NOT IMPLEMENTED: BookInstance update GET");
+  BookInstance.findById(req.params.id)
+  .exec(function (err, bookinstance) {
+    if (err) {
+      return next(err);
+    }
+    //Successful, so render
+    res.render("bookinstance-form", {
+      title: "BookInstance Form update",
+      bookinstance: bookinstance,
+    });
+  });
 };
 
 // Handle bookinstance update on POST.
 exports.bookinstance_update_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: BookInstance update POST");
+  BookInstance.findByIdAndUpdate(req.params.id, req.body).exec(function (
+    err,
+    updated_bookinstance
+  ) {
+    if (err) return next(err);
+    else {
+      console.log(updated_bookinstance);
+      res.redirect(updated_bookinstance.url);
+    }
+  });
 };
