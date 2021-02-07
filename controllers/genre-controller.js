@@ -55,7 +55,7 @@ exports.genre_detail = function (req, res) {
 
 // Display Genre create form on GET.
 exports.genre_create_get = function (req, res) {
-  res.render("genre-form", { title: "Create Genre"});
+  res.render("genre-form", { title: "Create Genre" });
 };
 
 // Handle Genre create on POST.
@@ -168,8 +168,7 @@ exports.genre_delete_post = function (req, res) {
 
 // Display Genre update form on GET.
 exports.genre_update_get = function (req, res) {
-  Genre.findById(req.params.id)
-  .exec(function (err, genre) {
+  Genre.findById(req.params.id).exec(function (err, genre) {
     if (err) {
       return next(err);
     }
@@ -183,13 +182,14 @@ exports.genre_update_get = function (req, res) {
 
 // Handle Genre update on POST.
 exports.genre_update_post = function (req, res) {
-  Genre.findByIdAndUpdate(req.params.id, req.body)
-    .exec(function(err, updated_genre){
-      if(err)
-        return next(err);
-      else{
-        console.log(updated_genre);
-        res.redirect('/catalog/genres');
-      }
-    })
+  Genre.findByIdAndUpdate(req.params.id, req.body).exec(function (
+    err,
+    updated_genre
+  ) {
+    if (err) return next(err);
+    else {
+      console.log(updated_genre);
+      res.redirect(updated_genre.url);
+    }
+  });
 };

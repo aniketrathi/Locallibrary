@@ -182,10 +182,29 @@ exports.author_delete_post = function (req, res) {
 
 // Display Author update form on GET.
 exports.author_update_get = function (req, res) {
-  res.send("NOT IMPLEMENTED: Author update GET");
+  Author.findById(req.params.id)
+  .exec(function (err, author) {
+    if (err) {
+      return next(err);
+    }
+    //Successful, so render
+    res.render("author-form", {
+      title: "Author Form update",
+      author: author,
+    });
+  });
 };
 
 // Handle Author update on POST.
 exports.author_update_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: Author update POST");
+  Author.findByIdAndUpdate(req.params.id, req.body).exec(function (
+    err,
+    updated_author
+  ) {
+    if (err) return next(err);
+    else {
+      console.log(updated_author);
+      res.redirect(updated_author.url);
+    }
+  });
 };
