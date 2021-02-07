@@ -62,14 +62,14 @@ exports.author_create_post = [
   // Validate and sanitise fields.
   body("first_name")
     .trim()
-    .isLength({ min: 1 })
+    .isLength({ min: 2 })
     .escape()
     .withMessage("First name must be specified.")
     .isAlphanumeric()
     .withMessage("First name has non-alphanumeric characters."),
   body("family_name")
     .trim()
-    .isLength({ min: 1 })
+    .isLength({ min: 2 })
     .escape()
     .withMessage("Family name must be specified.")
     .isAlphanumeric()
