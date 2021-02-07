@@ -1,5 +1,5 @@
 <%- include('partials/header') %>
-<h1>ID:<%= bookinstance.id %></h1>
+<h1>ID:<%= bookinstance._id %></h1>
 <p>
   <b>Title: </b
   ><a href="<%= bookinstance.book.url %>"><%= bookinstance.book.title %></a>
@@ -17,4 +17,7 @@
 </p>
 <% if(bookinstance.status != "Available"){ %>
 <p><b>Due: </b><%= bookinstance.due_back_formatted %></p>
-<% } %> <%- include('partials/footer') %>
+<% } %>
+<hr />
+<p><a href="<%= bookinstance.url %>/delete">Delete Copy</a></p>
+<%- include('partials/footer') %>
