@@ -1,5 +1,6 @@
 <%- include('partials/header') %>
 <h1><%= title %></h1>
+<!-- <p><%= locals.author === undefined ? '' : JSON.stringify(locals.author) %></p> -->
 <form method="POST" action="">
   <div class="form-group">
     <label for="first_name">First Name:</label>
@@ -19,11 +20,12 @@
       type="text"
       id="family_name"
       name="family_name"
-      value="<%= locals.author === undefined ? '' : locals.author.last_name %>"
+      value="<%= locals.author === undefined ? '' : locals.author.family_name %>"
       class="form-control"
       placeholder="Cena"
       required="true"
     />
+    <p></p>
   </div>
   <div class="form-group">
     <label for="date_of_birth">Date of birth:</label>
@@ -48,7 +50,7 @@
   <br />
   <input type="submit" value="Submit" class="btn btn-primary" />
 </form>
-<% if(errors){ %>
+<% if(locals.errors){ %>
 <ul>
   <% errors.map(error => { %>
   <li><%= error.msg %></li>
