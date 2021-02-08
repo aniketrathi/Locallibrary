@@ -1,6 +1,8 @@
 var Book = require("../models/book");
 var BookInstance = require("../models/bookinstance");
 
+var async = require("async");
+
 var { body, validationResult } = require("express-validator");
 
 // Display list of all BookInstances.
@@ -51,7 +53,6 @@ exports.bookinstance_create_get = function (req, res) {
     res.render("bookinstance-form", {
       title: "Create BookInstance",
       book_list: books,
-      errors: "",
     });
   });
 };
@@ -139,17 +140,27 @@ exports.bookinstance_delete_post = function (req, res) {
 
 // Display BookInstance update form on GET.
 exports.bookinstance_update_get = function (req, res) {
-  BookInstance.findById(req.params.id)
-  .exec(function (err, bookinstance) {
-    if (err) {
-      return next(err);
+  async.parallel(
+    {
+      bookinstance: function (callback) {
+        BookInstance.findById(req.params.id).exec(callback);
+      },
+      book_list: function (callback) {
+        Book.find({}, "title").exec(callback);
+      },
+    },
+    function (err, results) {
+      if (err) {
+        return next(err);
+      }
+      // Successful, so render.
+      res.render("bookinstance-form", {
+        title: "Update bookinstance",
+        bookinstance: results.bookinstance,
+        book_list: results.book_list,
+      });
     }
-    //Successful, so render
-    res.render("bookinstance-form", {
-      title: "BookInstance Form update",
-      bookinstance: bookinstance,
-    });
-  });
+  );
 };
 
 // Handle bookinstance update on POST.

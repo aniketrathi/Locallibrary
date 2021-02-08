@@ -11,12 +11,16 @@
       class="form-control"
       placeholder="select book"
     >
-      <% book_list.sort(function(a, b) {let textA = a.title.toUpperCase(); let
-      textB = b.title.toUpperCase(); return (textA < textB) ? -1 : (textA >
-      textB) ? 1 : 0;}); book_list.map(book =>{ %>
+      <% if(!locals.bookinstance || !locals.bookinstance.book){ %>
       <option value="" disabled selected hidden>Select book</option>
+      <% }book_list.sort(function(a, b) {let textA = a.title.toUpperCase(); let
+      textB = b.title.toUpperCase(); return (textA < textB) ? -1 : (textA >
+      textB) ? 1 : 0;}); book_list.map(book =>{ if(locals.bookinstance &&
+      locals.bookinstance.book.toString() === book._id.toString()){ %>
+      <option value="<%= book._id %>" selected><%= book.title %></option>
+      <%} else {%>
       <option value="<%= book._id %>"><%= book.title %></option>
-      <% }) %>
+      <%} }) %>
     </select>
   </div>
   <div class="form-group">
@@ -36,22 +40,26 @@
       type="date"
       id="due_back"
       name="due_back"
-      value="<%= locals.bookinstance === undefined ? '' : locals.bookinstance.due_back %>"
+      value="<%= locals.bookinstance === undefined ? '' : locals.bookinstance.due_back.toISOString().split('T')[0] %>"
       class="form-control"
     />
   </div>
   <div class="form-group">
-      <label for="status">Status:</label>
-      <select type="select" class="form-control" id="status" name="status">
-        <option value="" disabled selected hidden>Select Status</option>
-        <option value='Maintenance'>Maintenance</option> 
-        <option value='Available'>Available</option>
-        <option value='Loaned'>Loaned</option>
-        <option value='Reserved'>Reserved</option> 
-      </select>
+    <label for="status">Status:</label>
+    <select type="select" class="form-control" id="status" name="status">
+      <% if(!locals.bookinstance || !locals.bookinstance.book) {%>
+      <option value="" disabled selected hidden>Select status</option>
+      <% } var array_of_status = ['Maintenance', 'Loaned', 'Available',
+      'Reserved']; array_of_status.map(status_map => { if(locals.bookinstance &&
+      locals.bookinstance.status.toString() === status_map){ %>
+      <option value="<%= status_map  %>" selected><%= status_map %></option>
+      <% } else { %>
+      <option value="<%= status_map  %>"><%= status_map %></option>
+      <% } %> <% }) %>
+    </select>
   </div>
 </form>
-<% if(errors){ %>
+<% if(locals.errors){ %>
 <ul>
   <% errors.map(error => { %>
   <li><%= error.msg %></li>
