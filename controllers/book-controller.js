@@ -102,7 +102,6 @@ exports.book_create_get = function (req, res) {
         title: "Create Book",
         authors: results.authors,
         genres: results.genres,
-        errors:"",
       });
     }
   );
@@ -260,10 +259,43 @@ exports.book_delete_post = function (req, res) {
 
 // Display book update form on GET.
 exports.book_update_get = function (req, res) {
-  res.send("NOT IMPLEMENTED: Book update GET");
+  async.parallel(
+    {
+      book: function (callback) {
+        Book.findById(req.params.id).exec(callback);
+      },
+      genres: function (callback) {
+        Genre.find({}).exec(callback);
+      },
+      authors: function (callback) {
+        Author.find({}).exec(callback);
+      },
+    },
+    function (err, results) {
+      if (err) return next(err);
+      if (!results.book) {
+        res.redirect("/catalog/books");
+      }
+      res.render("book-form", {
+        title: "Update Book Form",
+        book: results.book,
+        genres: results.genres,
+        authors: results.authors,
+      });
+    }
+  );
 };
 
 // Handle book update on POST.
 exports.book_update_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: Book update POST");
+  Book.findByIdAndUpdate(req.params.id, req.body).exec(function (
+    err,
+    updated_book
+  ) {
+    if (err) return next(err);
+    else {
+      console.log(updated_book);
+      res.redirect(updated_book.url);
+    }
+  });
 };

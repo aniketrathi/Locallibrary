@@ -7,6 +7,7 @@
       type="text"
       id="title"
       name="title"
+      value="<%= locals.book === undefined ? '' : locals.book.title %>"
       class="form-control"
       placeholder="Harry Potter"
       required="true"
@@ -21,12 +22,17 @@
       class="form-control"
       placeholder="select author"
     >
+      <% if(!locals.book || !locals.book.author) %>
+      <option value="" disabled selected hidden>Select book</option>
       <% authors.sort(function(a, b) {let textA = a.family_name.toUpperCase();
       let textB = b.family_name.toUpperCase(); return (textA < textB) ? -1 :
-      (textA > textB) ? 1 : 0;}); authors.map(author => { %>
-      <option value="" disabled selected hidden>Select Author</option>
+      (textA > textB) ? 1 : 0;}); %> <% authors.map(author => { %> <%
+      if(locals.book && locals.book.author.toString() ===
+      author._id.toString()){ %>
+      <option value="<%= author._id %>" selected><%= author.name %></option>
+      <% } else {%>
       <option value="<%= author._id %>"><%= author.name %></option>
-      <% }) %>
+      <% } %> <% }) %>
     </select>
   </div>
   <div class="form-group">
@@ -39,6 +45,7 @@
       cols="2"
       required="true"
     >
+    <%= locals.book === undefined ? '' : locals.book.summary %>
     </textarea>
   </div>
   <div class="form-group">
@@ -47,6 +54,7 @@
       type="text"
       id="isbn"
       name="isbn"
+      value="<%= locals.book === undefined ? '' : locals.book.isbn %>"
       class="form-control"
       placeholder="ISBN13"
       required="true"
@@ -57,6 +65,16 @@
     <div>
       <% genres.map(genre =>{ %>
       <div style="display: inline; padding-right: 10px">
+        <% if(locals.book && locals.book.genre.includes(genre._id)) { %>
+        <input
+          type="checkbox"
+          class="checkbox-input"
+          name="genre"
+          id="<%= genre._id %>"
+          value="<%= genre._id %>"
+          checked
+        />
+        <% } else { %>
         <input
           type="checkbox"
           class="checkbox-input"
@@ -64,6 +82,7 @@
           id="<%= genre._id %>"
           value="<%= genre._id %>"
         />
+        <% } %>
         <label for="<%= genre._id %>"><%= genre.name %></label>
       </div>
       <% }) %>
@@ -72,7 +91,7 @@
   <br />
   <input type="submit" value="Submit" class="btn btn-primary" />
 </form>
-<% if(errors){ %>
+<% if(locals.errors){ %>
 <ul>
   <% errors.map(error => { %>
   <li><%= error.msg %></li>

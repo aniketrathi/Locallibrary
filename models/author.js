@@ -28,15 +28,19 @@ AuthorSchema.virtual("url").get(function () {
 });
 
 AuthorSchema.virtual("date_of_birth_formatted").get(function () {
-  return DateTime.fromJSDate(this.date_of_birth).toLocaleString(
-    DateTime.DATE_MED
-  );
+  if (this.date_of_birth)
+    return DateTime.fromJSDate(this.date_of_birth).toLocaleString(
+      DateTime.DATE_MED
+    );
+  else return;
 });
 
 AuthorSchema.virtual("date_of_death_formatted").get(function () {
-  return DateTime.fromJSDate(this.date_of_death).toLocaleString(
-    DateTime.DATE_MED
-  );
+  if (this.date_of_death)
+    return DateTime.fromJSDate(this.date_of_death).toLocaleString(
+      DateTime.DATE_MED
+    );
+  else return;
 });
 
 //Export model
