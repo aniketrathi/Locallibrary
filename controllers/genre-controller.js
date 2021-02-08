@@ -1,9 +1,9 @@
-var Genre = require("../models/genre");
-var Book = require("../models/book");
+const Genre = require("../models/genre");
+const Book = require("../models/book");
 
-var async = require("async");
+const async = require("async");
 
-var { body, validationResult } = require("express-validator");
+const { body, validationResult } = require("express-validator");
 
 // Display list of all Genre.
 exports.genre_list = function (req, res) {
@@ -39,7 +39,7 @@ exports.genre_detail = function (req, res) {
       }
       if (results.genre == null) {
         // No results.
-        var err = new Error("Genre not found");
+        const err = new Error("Genre not found");
         err.status = 404;
         return next(err);
       }
@@ -69,7 +69,7 @@ exports.genre_create_post = [
     const errors = validationResult(req);
 
     // Create a genre object with escaped and trimmed data.
-    var genre = new Genre({ name: req.body.name });
+    const genre = new Genre({ name: req.body.name });
 
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
@@ -188,7 +188,6 @@ exports.genre_update_post = function (req, res) {
   ) {
     if (err) return next(err);
     else {
-      console.log(updated_genre);
       res.redirect(updated_genre.url);
     }
   });

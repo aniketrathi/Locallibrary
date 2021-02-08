@@ -1,22 +1,20 @@
-var cookieParser = require("cookie-parser");
-var createError = require("http-errors");
-var express = require("express");
-var env = require("dotenv");
-var logger = require("morgan");
-var mongoose = require('mongoose');
-var path = require("path");
+const cookieParser = require("cookie-parser");
+const createError = require("http-errors");
+const express = require("express");
+const env = require("dotenv");
+const logger = require("morgan");
+const mongoose = require('mongoose');
+const path = require("path");
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-var catalogRouter = require("./routes/catalog");
+const indexRouter = require("./routes/index");
+const usersRouter = require("./routes/users");
+const catalogRouter = require("./routes/catalog");
 
-var app = express();
+const app = express();
 
 env.config();
 
-const dev_db_url =
-`mongodb+srv://Aniket:${process.env.password}@cluster0.9voqa.mongodb.net/${process.env.dbname}?retryWrites=true&w=majority`;
-const mongoDB = process.env.MONGODB_URI || dev_db_url;
+const mongoDB = process.env.MONGODB_URI || process.env.dev_db_url;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));

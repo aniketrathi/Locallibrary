@@ -1,9 +1,9 @@
-var Author = require("../models/author");
-var Book = require("../models/book");
+const Author = require("../models/author");
+const Book = require("../models/book");
 
-var async = require("async");
+const async = require("async");
 
-var { body, validationResult } = require("express-validator");
+const { body, validationResult } = require("express-validator");
 
 // Display list of all Authors.
 exports.author_list = function (req, res) {
@@ -38,7 +38,7 @@ exports.author_detail = function (req, res) {
       } // Error in API usage.
       if (results.author == null) {
         // No results.
-        var err = new Error("Author not found");
+        const err = new Error("Author not found");
         err.status = 404;
         return next(err);
       }
@@ -82,7 +82,6 @@ exports.author_create_post = [
     .optional({ checkFalsy: true })
     .isISO8601()
     .toDate(),
-
   // Process request after validation and sanitization.
   (req, res, next) => {
     // Extract the validation errors from a request.
@@ -100,7 +99,7 @@ exports.author_create_post = [
       // Data from form is valid.
 
       // Create an Author object with escaped and trimmed data.
-      var author = new Author({
+      const author = new Author({
         first_name: req.body.first_name,
         family_name: req.body.family_name,
         date_of_birth: req.body.date_of_birth,
@@ -182,8 +181,7 @@ exports.author_delete_post = function (req, res) {
 
 // Display Author update form on GET.
 exports.author_update_get = function (req, res) {
-  Author.findById(req.params.id)
-  .exec(function (err, author) {
+  Author.findById(req.params.id).exec(function (err, author) {
     if (err) {
       return next(err);
     }
@@ -203,7 +201,6 @@ exports.author_update_post = function (req, res) {
   ) {
     if (err) return next(err);
     else {
-      console.log(updated_author);
       res.redirect(updated_author.url);
     }
   });

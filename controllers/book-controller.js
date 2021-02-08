@@ -1,11 +1,11 @@
-var Book = require("../models/book");
-var Author = require("../models/author");
-var Genre = require("../models/genre");
-var BookInstance = require("../models/bookinstance");
+const Book = require("../models/book");
+const Author = require("../models/author");
+const Genre = require("../models/genre");
+const BookInstance = require("../models/bookinstance");
 
-var async = require("async");
+const async = require("async");
 
-var { body, validationResult } = require("express-validator");
+const { body, validationResult } = require("express-validator");
 
 exports.index = function (req, res) {
   async.parallel(
@@ -68,7 +68,7 @@ exports.book_detail = function (req, res) {
       }
       if (results.book == null) {
         // No results.
-        var err = new Error("Book not found");
+        const err = new Error("Book not found");
         err.status = 404;
         return next(err);
       }
@@ -140,7 +140,7 @@ exports.book_create_post = [
     const errors = validationResult(req);
 
     // Create a Book object with escaped and trimmed data.
-    var book = new Book({
+    const book = new Book({
       title: req.body.title,
       author: req.body.author,
       summary: req.body.summary,
@@ -294,7 +294,6 @@ exports.book_update_post = function (req, res) {
   ) {
     if (err) return next(err);
     else {
-      console.log(updated_book);
       res.redirect(updated_book.url);
     }
   });

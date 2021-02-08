@@ -49,7 +49,7 @@
     <select type="select" class="form-control" id="status" name="status">
       <% if(!locals.bookinstance || !locals.bookinstance.book) {%>
       <option value="" disabled selected hidden>Select status</option>
-      <% } var array_of_status = ['Maintenance', 'Loaned', 'Available',
+      <% } const array_of_status = ['Maintenance', 'Loaned', 'Available',
       'Reserved']; array_of_status.map(status_map => { if(locals.bookinstance &&
       locals.bookinstance.status.toString() === status_map){ %>
       <option value="<%= status_map  %>" selected><%= status_map %></option>
