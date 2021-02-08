@@ -1,6 +1,5 @@
 <%- include('partials/header') %>
 <h1><%= title %></h1>
-<!-- <p><%= locals.author === undefined ? '' : JSON.stringify(locals.author) %></p> -->
 <form method="POST" action="">
   <div class="form-group">
     <label for="first_name">First Name:</label>
@@ -25,7 +24,6 @@
       placeholder="Cena"
       required="true"
     />
-    <p></p>
   </div>
   <div class="form-group">
     <label for="date_of_birth">Date of birth:</label>
@@ -33,7 +31,7 @@
       type="date"
       id="date_of_birth"
       name="date_of_birth"
-      value="<%= locals.author === undefined ? '' : locals.author.date_of_birth %>"
+      value="<%= locals.author === undefined || !locals.author.date_of_birth ? '' : locals.author.date_of_birth.toISOString().split('T')[0] %>"
       class="form-control"
     />
   </div>
@@ -43,7 +41,7 @@
       type="date"
       id="date_of_death"
       name="date_of_death"
-      value="<%= locals.author === undefined ? '' : locals.author.date_of_death %>"
+      value="<%= locals.author === undefined || !locals.author.date_of_death ? '' : locals.author.date_of_death.toISOString().split('T')[0] %>"
       class="form-control"
     />
   </div>
