@@ -1,0 +1,57 @@
+<%- include('partials/header') %>
+<h1><%= title %></h1>
+<form method="POST" action="">
+  <div class="form-group">
+    <label for="first_name">First Name:</label>
+    <input
+      type="text"
+      id="first_name"
+      name="first_name"
+      value="<%= locals.author === undefined ? '' : locals.author.first_name %>"
+      class="form-control"
+      placeholder="John"
+      required="true"
+    />
+  </div>
+  <div class="form-group">
+    <label for="family_name">Family Name:</label>
+    <input
+      type="text"
+      id="family_name"
+      name="family_name"
+      value="<%= locals.author === undefined ? '' : locals.author.family_name %>"
+      class="form-control"
+      placeholder="Cena"
+      required="true"
+    />
+  </div>
+  <div class="form-group">
+    <label for="date_of_birth">Date of birth:</label>
+    <input
+      type="date"
+      id="date_of_birth"
+      name="date_of_birth"
+      value="<%= locals.author === undefined || !locals.author.date_of_birth ? '' : locals.author.date_of_birth.toISOString().split('T')[0] %>"
+      class="form-control"
+    />
+  </div>
+  <div class="form-group">
+    <label for="date_of_death">Date of death:</label>
+    <input
+      type="date"
+      id="date_of_death"
+      name="date_of_death"
+      value="<%= locals.author === undefined || !locals.author.date_of_death ? '' : locals.author.date_of_death.toISOString().split('T')[0] %>"
+      class="form-control"
+    />
+  </div>
+  <br />
+  <input type="submit" value="Submit" class="btn btn-primary" />
+</form>
+<% if(locals.errors){ %>
+<ul>
+  <% errors.map(error => { %>
+  <li><%= error.msg %></li>
+  <% }) %>
+</ul>
+<% } - include('partials/footer') %>

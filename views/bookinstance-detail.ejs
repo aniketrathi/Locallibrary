@@ -1,0 +1,26 @@
+<%- include('partials/header') %>
+<h1>ID:<%= bookinstance._id %></h1>
+<p>
+  <b>Title: </b
+  ><a href="<%= bookinstance.book.url %>"><%= bookinstance.book.title %></a>
+</p>
+<p><b>Imprint: </b><%= bookinstance.imprint %></p>
+<p>
+  <b>Status: </b>
+  <% if(bookinstance.status == "Available"){ %>
+  <span class="text-success"><%= bookinstance.status %></span>
+  <% }else if(bookinstance.status == "Maintenance"){ %>
+  <span class="text-danger"><%= bookinstance.status %></span>
+  <% }else{ %>
+  <span class="text-warning"><%= bookinstance.status %></span>
+  <% } %>
+</p>
+<% if(bookinstance.status != "Available"){ %>
+<p><b>Due: </b><%= bookinstance.due_back_formatted %></p>
+<% } %>
+<hr />
+<p>
+  <a href="<%= bookinstance.url %>/delete">Delete Copy</a>
+  <a href="<%= bookinstance.url %>/update">Update Copy</a>
+</p>
+<%- include('partials/footer') %>

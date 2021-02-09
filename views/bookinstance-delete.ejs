@@ -1,0 +1,17 @@
+<%- include('partials/header') %>
+<h1>Id:<%= bookinstance._id %></h1>
+<p>Do you really want to delete this Copy?</p>
+<form method="POST" action="">
+  <div class="form-group">
+    <input
+      id="bookinstanceid"
+      class="form-control"
+      type="hidden"
+      name="bookinstanceid"
+      value="<%= bookinstance._id %>"
+      required="true"
+    />
+  </div>
+  <input type="submit" value="Delete" class="btn btn-danger" />
+</form>
+<%- include('partials/footer') %>

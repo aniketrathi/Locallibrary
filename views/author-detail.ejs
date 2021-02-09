@@ -1,0 +1,22 @@
+<%- include('partials/header') %>
+<h1>Author:<%= author.name %></h1>
+<p>
+  <%= author.date_of_birth_formatted %> - <%= author.date_of_death_formatted %>
+</p>
+<div style="margin-left: 20px; margin-top: 20px">
+  <h4>Books</h4>
+  <dl>
+    <% if(author_books[0]){ author_books.map(book => { %>
+    <dt><a href="<%= book.url %>"><%= book.title %></a></dt>
+    <dd><%= book.summary %></dd>
+    <% }) } else{ %>
+    <p>This Author has no books.</p>
+    <% } %>
+  </dl>
+</div>
+<hr />
+<p>
+  <a href="<%=author.url%>/delete">Delete author</a>
+  <a href="<%=author.url%>/update" style="padding-left: 10px">Update author</a>
+</p>
+<%- include('partials/footer') %>

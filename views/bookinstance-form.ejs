@@ -1,0 +1,68 @@
+<%- include('partials/header') %>
+<h1><%= title %></h1>
+<form method="POST" action="">
+  <div class="form-group">
+    <label for="book">Book:</label>
+    <select
+      type="select"
+      id="book"
+      name="book"
+      value="<%= locals.bookinstance === undefined ? '' : locals.bookinstance.book %>"
+      class="form-control"
+      placeholder="select book"
+    >
+      <% if(!locals.bookinstance || !locals.bookinstance.book){ %>
+      <option value="" disabled selected hidden>Select book</option>
+      <% }book_list.sort(function(a, b) {let textA = a.title.toUpperCase(); let
+      textB = b.title.toUpperCase(); return (textA < textB) ? -1 : (textA >
+      textB) ? 1 : 0;}); book_list.map(book =>{ if(locals.bookinstance &&
+      locals.bookinstance.book.toString() === book._id.toString()){ %>
+      <option value="<%= book._id %>" selected><%= book.title %></option>
+      <%} else {%>
+      <option value="<%= book._id %>"><%= book.title %></option>
+      <%} }) %>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="imprint">Imprint:</label>
+    <input
+      type="text"
+      id="imprint"
+      name="imprint"
+      value="<%= locals.bookinstance === undefined ? '' : locals.bookinstance.imprint %>"
+      class="form-control"
+      placeholder="Publisher and date information"
+    />
+  </div>
+  <div class="form-group">
+    <label for="due_back">Due:</label>
+    <input
+      type="date"
+      id="due_back"
+      name="due_back"
+      value="<%= locals.bookinstance === undefined ? '' : locals.bookinstance.due_back.toISOString().split('T')[0] %>"
+      class="form-control"
+    />
+  </div>
+  <div class="form-group">
+    <label for="status">Status:</label>
+    <select type="select" class="form-control" id="status" name="status">
+      <% if(!locals.bookinstance || !locals.bookinstance.book) {%>
+      <option value="" disabled selected hidden>Select status</option>
+      <% } const array_of_status = ['Maintenance', 'Loaned', 'Available',
+      'Reserved']; array_of_status.map(status_map => { if(locals.bookinstance &&
+      locals.bookinstance.status.toString() === status_map){ %>
+      <option value="<%= status_map  %>" selected><%= status_map %></option>
+      <% } else { %>
+      <option value="<%= status_map  %>"><%= status_map %></option>
+      <% } %> <% }) %>
+    </select>
+  </div>
+</form>
+<% if(locals.errors){ %>
+<ul>
+  <% errors.map(error => { %>
+  <li><%= error.msg %></li>
+  <% }) %>
+</ul>
+<% } - include('partials/footer') %>

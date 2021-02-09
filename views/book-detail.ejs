@@ -1,0 +1,37 @@
+<%- include('partials/header') %>
+<h1>Title:<%= title %></h1>
+<p>
+  <b>Author:</b> <a href="<%= book.author.url %>"><%= book.author.name %></a>
+</p>
+<p><b>Summary:</b> <%= book.summary %></p>
+<p><b>ISBN: </b><%= book.isbn %></p>
+<p>
+  <b>Genre: </b><% book.genre.map(val =>{ %>
+  <a href="<%= val.url %>"><%= val.name %></a>, <% }) %>
+</p>
+<div style="margin-left: 20px; margin-top: 20px">
+  <h4>Copies</h4>
+  <% if(book_instances[0]){ book_instances.map(val => { %>
+  <hr />
+  <% if(val.status == "Available"){ %>
+  <span class="text-success"><%= val.status %></span>
+  <% }else if(val.status == "Maintenance"){ %>
+  <span class="text-danger"><%= val.status %></span>
+  <% }else{ %>
+  <span class="text-warning"><%= val.status %></span>
+  <% } %>
+  <br />
+  <b>Imprint:</b><%= val.imprint %> <br /><% if(val.status != "Available"){ %>
+  <span>Due: <%= val.due_back_formatted %></span><br />
+  <% } %>
+  <b>Id:</b><a href="<%= val.url %>"><%= val.id %></a>
+  <% }) } else{ %>
+  <p>There are no copies of this book in the library.</p>
+  <% } %>
+</div>
+<hr />
+<p>
+  <a href="<%= book.url %>/delete">Delete Book</a>
+  <a href="<%= book.url %>/update">Update Book</a>
+</p>
+<%- include('partials/footer') %>

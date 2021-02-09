@@ -1,0 +1,40 @@
+<%- include('partials/header') %>
+<h1>Book:<%= book.title %></h1>
+<% if(book_instances.length){ %>
+<p>
+  <b>Delete the following books instances before attempting to delete this book.</b>
+</p>
+<div style="margin-left: 20px; margin-top: 20px">
+  <h4>Copies</h4>
+  <% book_instances.map(val =>{ %>
+    <hr />
+  <% if(val.status == "Available"){ %>
+  <span class="text-success"><%= val.status %></span>
+  <% }else if(val.status == "Maintenance"){ %>
+  <span class="text-danger"><%= val.status %></span>
+  <% }else{ %>
+  <span class="text-warning"><%= val.status %></span>
+  <% } %>
+  <br />
+  <b>Imprint:</b><%= val.imprint %> <br /><% if(val.status != "Available"){ %>
+  <span>Due: <%= val.due_back_formatted %></span><br />
+  <% } %>
+  <b>Id:</b><a href="<%= val.url %>"><%= val.id %></a>
+  <% }) %>
+</div>
+<% }else{ %>
+<p>Do you really want to delete this Book?</p>
+<form method="POST" action="">
+  <div class="form-group">
+    <input
+      id="bookid"
+      class="form-control"
+      type="hidden"
+      name="bookid"
+      value="<%= book._id %>"
+      required="true"
+    />
+  </div>
+  <input type="submit" value="Delete" class="btn btn-danger" />
+</form>
+<% } - include('partials/footer') %>
