@@ -23,7 +23,8 @@ exports.bookinstance_list = function (req, res) {
 
 // Display detail page for a specific BookInstance.
 exports.bookinstance_detail = function (req, res) {
-  BookInstance.findById(req.params.id)
+  const { id } = req.params;
+  BookInstance.findById(id)
     .populate("book")
     .exec(function (err, bookinstance) {
       if (err) {
@@ -73,15 +74,16 @@ exports.bookinstance_create_post = [
 
   // Process request after validation and sanitization.
   (req, res, next) => {
+    const { book, imprint, status, due_back } = req.body;
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
     // Create a BookInstance object with escaped and trimmed data.
     const bookinstance = new BookInstance({
-      book: req.body.book,
-      imprint: req.body.imprint,
-      status: req.body.status,
-      due_back: req.body.due_back,
+      book: book,
+      imprint: imprint,
+      status: status,
+      due_back: due_back,
     });
 
     if (!errors.isEmpty()) {
@@ -115,7 +117,8 @@ exports.bookinstance_create_post = [
 
 // Display BookInstance delete form on GET.
 exports.bookinstance_delete_get = function (req, res) {
-  BookInstance.findById(req.params.id).exec(function (err, bookinstance) {
+  const { id } = req.params;
+  BookInstance.findById(id).exec(function (err, bookinstance) {
     if (err) {
       return next(err);
     }
@@ -133,17 +136,19 @@ exports.bookinstance_delete_get = function (req, res) {
 
 // Handle BookInstance delete on POST.
 exports.bookinstance_delete_post = function (req, res) {
-  BookInstance.findByIdAndRemove(req.body.bookinstanceid)
+  const { bookinstanceid } = req.body;
+  BookInstance.findByIdAndRemove(bookinstanceid)
     .then(() => res.redirect("/catalog/bookinstances"))
     .catch((err) => next(err));
 };
 
 // Display BookInstance update form on GET.
 exports.bookinstance_update_get = function (req, res) {
+  const { id } = req.params;
   async.parallel(
     {
       bookinstance: function (callback) {
-        BookInstance.findById(req.params.id).exec(callback);
+        BookInstance.findById(id).exec(callback);
       },
       book_list: function (callback) {
         Book.find({}, "title").exec(callback);
@@ -165,7 +170,8 @@ exports.bookinstance_update_get = function (req, res) {
 
 // Handle bookinstance update on POST.
 exports.bookinstance_update_post = function (req, res) {
-  BookInstance.findByIdAndUpdate(req.params.id, req.body).exec(function (
+  const { id } = req.params;
+  BookInstance.findByIdAndUpdate(id, req.body).exec(function (
     err,
     updated_bookinstance
   ) {

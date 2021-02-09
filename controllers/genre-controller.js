@@ -23,14 +23,15 @@ exports.genre_list = function (req, res) {
 
 // Display detail page for a specific Genre.
 exports.genre_detail = function (req, res) {
+  const { id } = req.params;
   async.parallel(
     {
       genre: function (callback) {
-        Genre.findById(req.params.id).exec(callback);
+        Genre.findById(id).exec(callback);
       },
 
       genre_books: function (callback) {
-        Book.find({ genre: req.params.id }).exec(callback);
+        Book.find({ genre: id }).exec(callback);
       },
     },
     function (err, results) {
@@ -65,11 +66,12 @@ exports.genre_create_post = [
 
   // Process request after validation and sanitization.
   (req, res, next) => {
+    const { name } = req.body;
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
     // Create a genre object with escaped and trimmed data.
-    const genre = new Genre({ name: req.body.name });
+    const genre = new Genre({ name: name });
 
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
@@ -82,7 +84,7 @@ exports.genre_create_post = [
     } else {
       // Data from form is valid.
       // Check if Genre with same name already exists.
-      Genre.findOne({ name: req.body.name }).exec(function (err, found_genre) {
+      Genre.findOne({ name: name }).exec(function (err, found_genre) {
         if (err) {
           return next(err);
         }
@@ -105,13 +107,14 @@ exports.genre_create_post = [
 ];
 // Display Genre delete form on GET.
 exports.genre_delete_get = function (req, res) {
+  const { id } = req.params;
   async.parallel(
     {
       genre: function (callback) {
-        Genre.findById(req.params.id).exec(callback);
+        Genre.findById(id).exec(callback);
       },
       genres_books: function (callback) {
-        Book.find({ genre: req.params.id }).exec(callback);
+        Book.find({ genre: id }).exec(callback);
       },
     },
     function (err, results) {
@@ -134,13 +137,14 @@ exports.genre_delete_get = function (req, res) {
 
 // Handle Genre delete on POST.
 exports.genre_delete_post = function (req, res) {
+  const { genreid } = req.body;
   async.parallel(
     {
       genre: function (callback) {
-        Genre.findById(req.body.genreid).exec(callback);
+        Genre.findById(genreid).exec(callback);
       },
       genres_books: function (callback) {
-        Book.find({ genre: req.body.genreid }).exec(callback);
+        Book.find({ genre: genreid }).exec(callback);
       },
     },
     function (err, results) {
@@ -158,7 +162,7 @@ exports.genre_delete_post = function (req, res) {
         return;
       } else {
         // Author has no books. Delete object and redirect to the list of authors.
-        Genre.findByIdAndRemove(req.body.genreid)
+        Genre.findByIdAndRemove(genreid)
           .then(() => res.redirect("/catalog/genres"))
           .catch((err) => next(err));
       }
@@ -168,7 +172,8 @@ exports.genre_delete_post = function (req, res) {
 
 // Display Genre update form on GET.
 exports.genre_update_get = function (req, res) {
-  Genre.findById(req.params.id).exec(function (err, genre) {
+  const { id } = req.params;
+  Genre.findById(id).exec(function (err, genre) {
     if (err) {
       return next(err);
     }
@@ -182,7 +187,8 @@ exports.genre_update_get = function (req, res) {
 
 // Handle Genre update on POST.
 exports.genre_update_post = function (req, res) {
-  Genre.findByIdAndUpdate(req.params.id, req.body).exec(function (
+  const { id } = req.params;
+  Genre.findByIdAndUpdate(id, req.body).exec(function (
     err,
     updated_genre
   ) {

@@ -7,14 +7,13 @@ const mongoose = require('mongoose');
 const path = require("path");
 
 const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/users");
 const catalogRouter = require("./routes/catalog");
 
 const app = express();
 
 env.config();
 
-const mongoDB = process.env.MONGODB_URI || process.env.dev_db_url;
+const mongoDB = process.env.dev_db_url;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -30,7 +29,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
 app.use("/catalog", catalogRouter);
 
 // catch 404 and forward to error handler

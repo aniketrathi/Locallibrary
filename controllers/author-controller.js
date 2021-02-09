@@ -23,13 +23,14 @@ exports.author_list = function (req, res) {
 
 // Display detail page for a specific Author.
 exports.author_detail = function (req, res) {
+  const { id } = req.params;
   async.parallel(
     {
       author: function (callback) {
-        Author.findById(req.params.id).exec(callback);
+        Author.findById(id).exec(callback);
       },
       authors_books: function (callback) {
-        Book.find({ author: req.params.id }, "title summary").exec(callback);
+        Book.find({ author: id }, "title summary").exec(callback);
       },
     },
     function (err, results) {
@@ -84,6 +85,8 @@ exports.author_create_post = [
     .toDate(),
   // Process request after validation and sanitization.
   (req, res, next) => {
+    const { first_name, family_name, date_of_birth, date_of_death } = req.body;
+
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
@@ -100,10 +103,10 @@ exports.author_create_post = [
 
       // Create an Author object with escaped and trimmed data.
       const author = new Author({
-        first_name: req.body.first_name,
-        family_name: req.body.family_name,
-        date_of_birth: req.body.date_of_birth,
-        date_of_death: req.body.date_of_death,
+        first_name: first_name,
+        family_name: family_name,
+        date_of_birth: date_of_birth,
+        date_of_death: date_of_death,
       });
       author.save(function (err) {
         if (err) {
@@ -118,13 +121,14 @@ exports.author_create_post = [
 
 // Display Author delete form on GET.
 exports.author_delete_get = function (req, res) {
+  const { id } = req.params;
   async.parallel(
     {
       author: function (callback) {
-        Author.findById(req.params.id).exec(callback);
+        Author.findById(id).exec(callback);
       },
       authors_books: function (callback) {
-        Book.find({ author: req.params.id }).exec(callback);
+        Book.find({ author: id }).exec(callback);
       },
     },
     function (err, results) {
@@ -147,13 +151,14 @@ exports.author_delete_get = function (req, res) {
 
 // Handle Author delete on POST.
 exports.author_delete_post = function (req, res) {
+  const { authorid } = req.body;
   async.parallel(
     {
       author: function (callback) {
-        Author.findById(req.body.authorid).exec(callback);
+        Author.findById(authorid).exec(callback);
       },
       authors_books: function (callback) {
-        Book.find({ author: req.body.authorid }).exec(callback);
+        Book.find({ author: authorid }).exec(callback);
       },
     },
     function (err, results) {
@@ -181,7 +186,8 @@ exports.author_delete_post = function (req, res) {
 
 // Display Author update form on GET.
 exports.author_update_get = function (req, res) {
-  Author.findById(req.params.id).exec(function (err, author) {
+  const { id } = req.params;
+  Author.findById(id).exec(function (err, author) {
     if (err) {
       return next(err);
     }
@@ -195,7 +201,8 @@ exports.author_update_get = function (req, res) {
 
 // Handle Author update on POST.
 exports.author_update_post = function (req, res) {
-  Author.findByIdAndUpdate(req.params.id, req.body).exec(function (
+  const { id } = req.params;
+  Author.findByIdAndUpdate(id, req.body).exec(function (
     err,
     updated_author
   ) {

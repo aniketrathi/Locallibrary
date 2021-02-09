@@ -50,16 +50,14 @@ exports.book_list = function (req, res, next) {
 };
 // Display detail page for a specific book.
 exports.book_detail = function (req, res) {
+  const { id } = req.params;
   async.parallel(
     {
       book: function (callback) {
-        Book.findById(req.params.id)
-          .populate("author")
-          .populate("genre")
-          .exec(callback);
+        Book.findById(id).populate("author").populate("genre").exec(callback);
       },
       book_instance: function (callback) {
-        BookInstance.find({ book: req.params.id }).exec(callback);
+        BookInstance.find({ book: id }).exec(callback);
       },
     },
     function (err, results) {
@@ -136,16 +134,17 @@ exports.book_create_post = [
 
   // Process request after validation and sanitization.
   (req, res, next) => {
+    const { title, author, summary, isbn, genre } = req.body;
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
     // Create a Book object with escaped and trimmed data.
     const book = new Book({
-      title: req.body.title,
-      author: req.body.author,
-      summary: req.body.summary,
-      isbn: req.body.isbn,
-      genre: req.body.genre,
+      title: title,
+      author: author,
+      summary: summary,
+      isbn: isbn,
+      genre: genre,
     });
 
     if (!errors.isEmpty()) {
@@ -196,13 +195,14 @@ exports.book_create_post = [
 
 // Display book delete form on GET.
 exports.book_delete_get = function (req, res) {
+  const { id } = req.params;
   async.parallel(
     {
       book: function (callback) {
-        Book.findById(req.params.id).exec(callback);
+        Book.findById(id).exec(callback);
       },
       books_bookinstances: function (callback) {
-        BookInstance.find({ book: req.params.id }).exec(callback);
+        BookInstance.find({ book: id }).exec(callback);
       },
     },
     function (err, results) {
@@ -225,13 +225,14 @@ exports.book_delete_get = function (req, res) {
 
 // Handle book delete on POST.
 exports.book_delete_post = function (req, res) {
+  const { bookid } = req.body;
   async.parallel(
     {
       book: function (callback) {
-        Genre.findById(req.body.bookid).exec(callback);
+        Genre.findById(bookid).exec(callback);
       },
       books_instances: function (callback) {
-        Book.find({ book: req.body.bookid }).exec(callback);
+        Book.find({ book: bookid }).exec(callback);
       },
     },
     function (err, results) {
@@ -249,7 +250,7 @@ exports.book_delete_post = function (req, res) {
         return;
       } else {
         // Author has no books. Delete object and redirect to the list of authors.
-        Book.findByIdAndRemove(req.body.bookid)
+        Book.findByIdAndRemove(bookid)
           .then(() => res.redirect("/catalog/books"))
           .catch((err) => next(err));
       }
@@ -259,10 +260,11 @@ exports.book_delete_post = function (req, res) {
 
 // Display book update form on GET.
 exports.book_update_get = function (req, res) {
+  const { id } = req.params;
   async.parallel(
     {
       book: function (callback) {
-        Book.findById(req.params.id).exec(callback);
+        Book.findById(id).exec(callback);
       },
       genres: function (callback) {
         Genre.find({}).exec(callback);
@@ -288,10 +290,8 @@ exports.book_update_get = function (req, res) {
 
 // Handle book update on POST.
 exports.book_update_post = function (req, res) {
-  Book.findByIdAndUpdate(req.params.id, req.body).exec(function (
-    err,
-    updated_book
-  ) {
+  const { id } = req.params;
+  Book.findByIdAndUpdate(id, req.body).exec(function (err, updated_book) {
     if (err) return next(err);
     else {
       res.redirect(updated_book.url);
